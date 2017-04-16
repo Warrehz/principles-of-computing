@@ -71,19 +71,27 @@ class TwentyFortyEight:
         Reset the game so the grid is empty except for two
         initial tiles.
         """
+
+        # creates grid based on input width and height
         self.grid = [[0 for col in range(self.grid_width)]
                         for row in range(self.grid_height)]
 
-        self.new_tile()
-        return self.grid
+        # adds two new tiles to the grid
+        for num in range(0, 2):
+            self.new_tile()
 
+        return self.grid
 
     def __str__(self):
         """
         Return a string representation of the grid for debugging.
         """
         # replace with your code
-        return ""
+        string_grid = ""
+        for row in range(self.grid_height):
+            string_grid += str(self.grid[row]) + "\n"
+
+        return string_grid
 
     def get_grid_height(self):
         """
@@ -140,6 +148,9 @@ class TwentyFortyEight:
         return 0
 
 
-test_grid = TwentyFortyEight(2, 2)
+test_grid = TwentyFortyEight(3, 3)
 print test_grid.grid
-poc_2048_gui.run_gui(TwentyFortyEight(2, 2))
+print test_grid.get_grid_width()
+print test_grid.get_grid_height()
+print test_grid.__str__()
+poc_2048_gui.run_gui(TwentyFortyEight(3, 3))
