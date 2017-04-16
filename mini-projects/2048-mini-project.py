@@ -121,9 +121,10 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        # sets rand_tile to a random tile
+        # gets random coordinates for a tile
         rand_row = random.randrange(0, self.grid_height)
         rand_col = random.randrange(0, self.grid_width)
+        # gets random number and uses it to determine value of new tile
         num = random.randrange(1, 11)
         if self.grid[rand_row][rand_col] == 0:
             if num > 9:
@@ -137,15 +138,13 @@ class TwentyFortyEight:
         """
         Set the tile at position row, col to have the given value.
         """
-        # replace with your code
-        pass
+        self.grid[row][col] = value
 
     def get_tile(self, row, col):
         """
         Return the value of the tile at position row, col.
         """
-        # replace with your code
-        return 0
+        return self.grid[row][col]
 
 
 test_grid = TwentyFortyEight(3, 3)
