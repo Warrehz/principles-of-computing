@@ -63,6 +63,7 @@ class TwentyFortyEight:
         self.grid_height = grid_height
         self.grid_width = grid_width
         self.reset()
+        self.change = 0
         self.initial_indices = {UP: [[0, col] for col in range(self.grid_width)],
                                 DOWN: [[self.grid_height - 1, col] for col in range(self.grid_width)],
                                 LEFT: [[row, 0] for row in range(self.grid_height)],
@@ -126,6 +127,8 @@ class TwentyFortyEight:
 
             self.grid[row][col] = new_list[step]
 
+        if new_list != list:
+            self.change += 1
 
     def move(self, direction):
         """
@@ -135,12 +138,14 @@ class TwentyFortyEight:
         # replace with your code
         initial_list = self.initial_indices[direction]
         steps = self.grid_height
-        temp_list = []
 
         for idx in initial_list:
                 self.traverse_grid((idx), (OFFSETS[direction]), steps)
 
-        #return ""
+        if self.change:
+            self.new_tile()
+            self.change = 0
+
 
     def new_tile(self):
         """
@@ -152,7 +157,7 @@ class TwentyFortyEight:
         col = 0
         row = 0
 
-        # gets random coordinates for a rile
+        # gets random coordinates for a tile
         while flag:
             col = random.randrange(self.grid_width)
             row = random.randrange(self.grid_height)
@@ -179,11 +184,5 @@ class TwentyFortyEight:
         return self.grid[row][col]
 
 
-test_game = TwentyFortyEight(3, 3)
-poc_2048_gui.run_gui(test_game)
-print test_game.grid
-print
-print test_game.__str__()
-print
-test_game.move(UP)
-print test_game.__str__()
+# test_game = TwentyFortyEight(3, 3)
+# poc_2048_gui.run_gui(test_game)
