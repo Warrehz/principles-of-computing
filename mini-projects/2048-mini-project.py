@@ -60,14 +60,14 @@ class TwentyFortyEight:
 
     def __init__(self, grid_height, grid_width):
         # initialize class properties
-        self.grid_height = grid_height
-        self.grid_width = grid_width
+        self.height = grid_height
+        self.width = grid_width
         self.reset()
         self.change = 0
-        self.initial_indices = {UP: [[0, col] for col in range(self.grid_width)],
-                                DOWN: [[self.grid_height - 1, col] for col in range(self.grid_width)],
-                                LEFT: [[row, 0] for row in range(self.grid_height)],
-                                RIGHT: [[row, self.grid_width - 1] for row in range(self.grid_height)]}
+        self.initial = {UP: [[0, col] for col in range(self.width)],
+                        DOWN: [[self.height - 1, col] for col in range(self.width)],
+                        LEFT: [[row, 0] for row in range(self.height)],
+                        RIGHT: [[row, self.width - 1] for row in range(self.height)]}
 
 
     def reset(self):
@@ -77,14 +77,12 @@ class TwentyFortyEight:
         """
 
         # creates grid based on input width and height
-        self.grid = [[0 for col in range(self.grid_width)]
-                        for row in range(self.grid_height)]
+        self.grid = [[0 for dummy_i in range(self.width)]
+                        for dummy_j in range(self.height)]
 
         # adds two new tiles to the grid
-        for num in range(0, 2):
-            self.new_tile()
-
-        return self.grid
+        self.new_tile()
+        self.new_tile()
 
     def __str__(self):
         """
@@ -92,7 +90,7 @@ class TwentyFortyEight:
         """
         # replace with your code
         string_grid = ""
-        for row in range(self.grid_height):
+        for row in range(self.height):
             string_grid += str(self.grid[row]) + "\n"
 
         return string_grid
@@ -102,24 +100,27 @@ class TwentyFortyEight:
         Get the height of the board.
         """
         # replace with your code
-        return self.grid_height
+        return self.height
 
     def get_grid_width(self):
         """
         Get the width of the board.
         """
         # replace with your code
-        return self.grid_width
+        return self.width
 
     def traverse_grid(self, start_cell, direction, num_steps):
-        list = []
+        """
+        Function to traverse grid and merge tiles
+        """
+        start_list = []
         for step in range(num_steps):
             row = start_cell[0] + step * direction[0]
             col = start_cell[1] + step * direction[1]
 
-            list.append(self.grid[row][col])
+            start_list.append(self.grid[row][col])
 
-        new_list = merge(list)
+        new_list = merge(start_list)
 
         for step in range(num_steps):
             row = start_cell[0] + step * direction[0]
@@ -127,7 +128,7 @@ class TwentyFortyEight:
 
             self.grid[row][col] = new_list[step]
 
-        if new_list != list:
+        if new_list != start_list:
             self.change += 1
 
     def move(self, direction):
@@ -136,8 +137,13 @@ class TwentyFortyEight:
         a new tile if any tiles moved.
         """
         # replace with your code
-        initial_list = self.initial_indices[direction]
-        steps = self.grid_height
+        initial_list = self.initial[direction]
+        steps = 0
+        if len(initial_list) == self.width:
+            steps = self.height
+        else:
+            steps = self.width
+
 
         for idx in initial_list:
                 self.traverse_grid((idx), (OFFSETS[direction]), steps)
@@ -159,8 +165,8 @@ class TwentyFortyEight:
 
         # gets random coordinates for a tile
         while flag:
-            col = random.randrange(self.grid_width)
-            row = random.randrange(self.grid_height)
+            col = random.randrange(self.width)
+            row = random.randrange(self.height)
             if self.grid[row][col] == 0:
                 flag = False
 
@@ -184,5 +190,4 @@ class TwentyFortyEight:
         return self.grid[row][col]
 
 
-# test_game = TwentyFortyEight(3, 3)
-# poc_2048_gui.run_gui(test_game)
+poc_2048_gui.run_gui(TwentyFortyEight(2, 2))
