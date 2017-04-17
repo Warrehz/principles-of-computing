@@ -110,6 +110,23 @@ class TwentyFortyEight:
         # replace with your code
         return self.grid_width
 
+    def traverse_grid(self, start_cell, direction, num_steps):
+        list = []
+        for step in range(num_steps):
+            row = start_cell[0] + step * direction[0]
+            col = start_cell[1] + step * direction[1]
+
+            list.append(self.grid[row][col])
+
+        new_list = merge(list)
+
+        for step in range(num_steps):
+            row = start_cell[0] + step * direction[0]
+            col = start_cell[1] + step * direction[1]
+
+            self.grid[row][col] = new_list[step]
+
+
     def move(self, direction):
         """
         Move all tiles in the given direction and add
@@ -117,14 +134,13 @@ class TwentyFortyEight:
         """
         # replace with your code
         initial_list = self.initial_indices[direction]
+        steps = self.grid_height
         temp_list = []
+
         for idx in initial_list:
-            for row in range(self.grid_height):
-                temp_list.append(self.get_tile(idx[0], idx[1]))
+                self.traverse_grid((idx), (OFFSETS[direction]), steps)
 
-            print temp_list
-
-        return ""
+        #return ""
 
     def new_tile(self):
         """
@@ -132,17 +148,18 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        # gets random coordinates for a tile
         flag = True
         col = 0
         row = 0
 
+        # gets random coordinates for a rile
         while flag:
             col = random.randrange(self.grid_width)
             row = random.randrange(self.grid_height)
             if self.grid[row][col] == 0:
                 flag = False
 
+        # gives a 2 or 4 based on specified probability
         if random.random() <= .1:
             self.grid[row][col] = 4
         else:
@@ -166,4 +183,7 @@ test_game = TwentyFortyEight(3, 3)
 poc_2048_gui.run_gui(test_game)
 print test_game.grid
 print
+print test_game.__str__()
+print
+test_game.move(UP)
 print test_game.__str__()
